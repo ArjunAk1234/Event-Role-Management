@@ -1,708 +1,6 @@
-// // // // import React, { useState, useEffect } from "react";
-// // // // import axios from "axios";
-// // // // import { Link, useNavigate } from "react-router-dom";
-
-// // // // // Main Admin Dashboard Component (No longer needs Routes)
-// // // // const AdminDashboard = () => {
-// // // //   const [events, setEvents] = useState([]);
-// // // //   const navigate = useNavigate();
-// // // //   const [showCreateForm, setShowCreateForm] = useState(false);
-// // // //   const [formData, setFormData] = useState({
-// // // //     eventName: "",
-// // // //     eventDescription: "",
-// // // //     startDate: "",
-// // // //     endDate: "",
-// // // //   });
-
-// // // //   useEffect(() => {
-// // // //     fetchEvents();
-// // // //   }, []);
-
-// // // //   const fetchEvents = () => {
-// // // //     axios
-// // // //       .get("http://localhost:8080/events/current")
-// // // //       .then((res) => setEvents(res.data))
-// // // //       .catch((err) => console.error("Error fetching events:", err));
-// // // //   };
-
-// // // //   const handleInputChange = (e) => {
-// // // //     const { name, value } = e.target;
-// // // //     setFormData((prev) => ({ ...prev, [name]: value }));
-// // // //   };
-
-// // // //   const handleFormSubmit = (e) => {
-// // // //     e.preventDefault();
-    
-// // // //     // In a real application, you'd make a POST request to your backend
-// // // //     axios.post("https://09da6b2c-7088-466c-b94a-4662e3e1bd28.mock.pstmn.io/events", {
-// // // //       event_name: formData.eventName,
-// // // //       event_description: formData.eventDescription,
-// // // //       start_date: formData.startDate,
-// // // //       end_date: formData.endDate
-// // // //     })
-// // // //     .then(response => {
-// // // //       console.log("Event created:", response.data);
-// // // //       // Reset form
-// // // //       setFormData({
-// // // //         eventName: "",
-// // // //         eventDescription: "",
-// // // //         startDate: "",
-// // // //         endDate: "",
-// // // //       });
-// // // //       // Hide form
-// // // //       setShowCreateForm(false);
-// // // //       // Refresh event list
-// // // //       fetchEvents();
-// // // //     })
-// // // //     .catch(error => {
-// // // //       console.error("Error creating event:", error);
-// // // //     });
-// // // //   };
-
-// // // //   return (
-// // // //     <div>
-// // // //       <h2 className="text-xl font-semibold mb-4">Admin Dashboard</h2>
-      
-// // // //       <button
-// // // //         className="mb-6 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-// // // //         onClick={() => setShowCreateForm(!showCreateForm)}
-// // // //       >
-// // // //         {showCreateForm ? "Cancel" : "Create Event"}
-// // // //       </button>
-
-// // // //       {showCreateForm && (
-// // // //         <div className="bg-white shadow rounded p-6 mb-6">
-// // // //           <h3 className="text-xl font-semibold mb-4">Create New Event</h3>
-// // // //           <form onSubmit={handleFormSubmit} className="space-y-4">
-// // // //             <div>
-// // // //               <label className="block mb-1 font-medium">Event Name</label>
-// // // //               <input
-// // // //                 type="text"
-// // // //                 name="eventName"
-// // // //                 value={formData.eventName}
-// // // //                 onChange={handleInputChange}
-// // // //                 className="w-full px-3 py-2 border rounded"
-// // // //                 required
-// // // //               />
-// // // //             </div>
-// // // //             <div>
-// // // //               <label className="block mb-1 font-medium">Event Description</label>
-// // // //               <textarea
-// // // //                 name="eventDescription"
-// // // //                 value={formData.eventDescription}
-// // // //                 onChange={handleInputChange}
-// // // //                 className="w-full px-3 py-2 border rounded"
-// // // //                 rows="3"
-// // // //               />
-// // // //             </div>
-// // // //             <div>
-// // // //               <label className="block mb-1 font-medium">Start Date</label>
-// // // //               <input
-// // // //                 type="date"
-// // // //                 name="startDate"
-// // // //                 value={formData.startDate}
-// // // //                 onChange={handleInputChange}
-// // // //                 className="w-full px-3 py-2 border rounded"
-// // // //                 required
-// // // //               />
-// // // //             </div>
-// // // //             <div>
-// // // //               <label className="block mb-1 font-medium">End Date</label>
-// // // //               <input
-// // // //                 type="date"
-// // // //                 name="endDate"
-// // // //                 value={formData.endDate}
-// // // //                 onChange={handleInputChange}
-// // // //                 className="w-full px-3 py-2 border rounded"
-// // // //                 required
-// // // //               />
-// // // //             </div>
-// // // //             <div className="flex items-center gap-4">
-// // // //               <button
-// // // //                 type="submit"
-// // // //                 className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-// // // //               >
-// // // //                 Create Event
-// // // //               </button>
-// // // //               <button
-// // // //                 type="button"
-// // // //                 className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
-// // // //                 onClick={() => setShowCreateForm(false)}
-// // // //               >
-// // // //                 Cancel
-// // // //               </button>
-// // // //             </div>
-// // // //           </form>
-// // // //         </div>
-// // // //       )}
-
-// // // //       <div>
-// // // //         <h1 className="text-2xl font-bold mb-4">Current Events</h1>
-// // // //         <ul className="space-y-2">
-// // // //           {events.map((event) => (
-// // // //             <li
-// // // //               key={event.event_id}
-// // // //               className="p-4 border rounded bg-white shadow hover:bg-blue-50 cursor-pointer transition"
-// // // //               onClick={() => navigate(`/admin/event/${event.event_id}`)}
-// // // //             >
-// // // //               <h2 className="text-lg font-semibold">{event.event_name}</h2>
-// // // //               <p className="text-sm text-gray-600">{event.event_description}</p>
-// // // //               <div className="flex justify-between mt-2">
-// // // //                 <span className="text-xs text-gray-500">
-// // // //                   {new Date(event.start_date).toLocaleDateString()} - {new Date(event.end_date).toLocaleDateString()}
-// // // //                 </span>
-// // // //                 <Link
-// // // //                   to={`/admin/event/${event.event_id}`}
-// // // //                   className="text-blue-600 hover:text-blue-800 text-sm"
-// // // //                 >
-// // // //                   Manage Event →
-// // // //                 </Link>
-// // // //               </div>
-// // // //             </li>
-// // // //           ))}
-// // // //         </ul>
-// // // //       </div>
-// // // //     </div>
-// // // //   );
-// // // // };
-
-// // // // export default AdminDashboard;
-// // // import React, { useState, useEffect } from "react";
-// // // import axios from "axios";
-// // // import { Link, useNavigate } from "react-router-dom";
-// // // import "./AdminDashboard.css"; // Import the CSS file
-
-// // // // Main Admin Dashboard Component
-// // // const AdminDashboard = () => {
-// // //   const [events, setEvents] = useState([]);
-// // //   const navigate = useNavigate();
-// // //   const [showCreateForm, setShowCreateForm] = useState(false);
-// // //   const [formData, setFormData] = useState({
-// // //     eventName: "",
-// // //     eventDescription: "",
-// // //     startDate: "",
-// // //     endDate: "",
-// // //   });
-
-// // //   useEffect(() => {
-// // //     fetchEvents();
-// // //   }, []);
-
-// // //   const fetchEvents = () => {
-// // //     axios
-// // //       .get("http://localhost:8080/events/current")
-// // //       .then((res) => setEvents(res.data))
-// // //       .catch((err) => console.error("Error fetching events:", err));
-// // //   };
-
-// // //   const handleInputChange = (e) => {
-// // //     const { name, value } = e.target;
-// // //     setFormData((prev) => ({ ...prev, [name]: value }));
-// // //   };
-
-// // //   const handleFormSubmit = (e) => {
-// // //     e.preventDefault();
-    
-// // //     axios.post("http://localhost:8080/events", {
-// // //       name: formData.eventName,
-// // //       description: formData.eventDescription,
-// // //       start_date: formData.startDate,
-// // //       end_date: formData.endDate
-// // //     })
-// // //     .then(response => {
-// // //       console.log("Event created:", response.data);
-// // //       setFormData({
-// // //         eventName: "",
-// // //         eventDescription: "",
-// // //         startDate: "",
-// // //         endDate: "",
-// // //       });
-// // //       setShowCreateForm(false);
-// // //       fetchEvents();
-// // //     })
-// // //     .catch(error => {
-// // //       console.error("Error creating event:", error);
-// // //     });
-// // //   };
-
-// // //   return (
-// // //     <div className="admin-dashboard">
-// // //       <div className="dashboard-container">
-// // //         <h2 className="dashboard-title">Admin Dashboard</h2>
-        
-// // //         <button
-// // //           className="btn btn-primary mb-6"
-// // //           onClick={() => setShowCreateForm(!showCreateForm)}
-// // //         >
-// // //           {showCreateForm ? "Cancel" : "Create Event"}
-// // //         </button>
-
-// // //         {showCreateForm && (
-// // //           <div className="create-form">
-// // //             <h3 className="form-title">Create New Event</h3>
-// // //             <form onSubmit={handleFormSubmit}>
-// // //               <div className="form-group">
-// // //                 <label className="form-label">Event Name</label>
-// // //                 <input
-// // //                   type="text"
-// // //                   name="eventName"
-// // //                   value={formData.eventName}
-// // //                   onChange={handleInputChange}
-// // //                   className="form-input"
-// // //                   required
-// // //                 />
-// // //               </div>
-// // //               <div className="form-group">
-// // //                 <label className="form-label">Event Description</label>
-// // //                 <textarea
-// // //                   name="eventDescription"
-// // //                   value={formData.eventDescription}
-// // //                   onChange={handleInputChange}
-// // //                   className="form-textarea"
-// // //                   rows="3"
-// // //                 />
-// // //               </div>
-// // //               <div className="form-group">
-// // //                 <label className="form-label">Start Date</label>
-// // //                 <input
-// // //                   type="date"
-// // //                   name="startDate"
-// // //                   value={formData.startDate}
-// // //                   onChange={handleInputChange}
-// // //                   className="form-input"
-// // //                   required
-// // //                 />
-// // //               </div>
-// // //               <div className="form-group">
-// // //                 <label className="form-label">End Date</label>
-// // //                 <input
-// // //                   type="date"
-// // //                   name="endDate"
-// // //                   value={formData.endDate}
-// // //                   onChange={handleInputChange}
-// // //                   className="form-input"
-// // //                   required
-// // //                 />
-// // //               </div>
-// // //               <div className="form-actions">
-// // //                 <button type="submit" className="btn btn-success">
-// // //                   Create Event
-// // //                 </button>
-// // //                 <button
-// // //                   type="button"
-// // //                   className="btn btn-secondary"
-// // //                   onClick={() => setShowCreateForm(false)}
-// // //                 >
-// // //                   Cancel
-// // //                 </button>
-// // //               </div>
-// // //             </form>
-// // //           </div>
-// // //         )}
-
-// // //         <div>
-// // //           <h1 className="section-title">Current Events</h1>
-// // //           {events.length === 0 ? (
-// // //             <div className="empty-state">
-// // //               <div className="empty-state-icon">📅</div>
-// // //               <div className="empty-state-text">No events found</div>
-// // //               <div className="empty-state-subtext">Create your first event to get started</div>
-// // //             </div>
-// // //           ) : (
-// // //             <div className="events-list">
-// // //               {events.map((event) => (
-// // //                 <div
-// // //                   key={event.event_id}
-// // //                   className="event-card fade-in"
-// // //                   onClick={() => navigate(`/admin/event/${event.event_id}`)}
-// // //                 >
-// // //                   <h2 className="event-title">{event.name}</h2>
-// // //                   <p className="event-description">{event.description}</p>
-// // //                   <div className="event-footer">
-// // //                     <span className="event-dates">
-// // //                       {new Date(event.start_date).toLocaleDateString()} - {new Date(event.end_date).toLocaleDateString()}
-// // //                     </span>
-// // //                     <Link
-// // //                       to={`/admin/event/${event.event_id}`}
-// // //                       className="event-link"
-// // //                       onClick={(e) => e.stopPropagation()}
-// // //                     >
-// // //                       Manage Event →
-// // //                     </Link>
-// // //                   </div>
-// // //                 </div>
-// // //               ))}
-// // //             </div>
-// // //           )}
-// // //         </div>
-// // //       </div>
-// // //     </div>
-// // //   );
-// // // };
-
-// // // export default AdminDashboard;
-// // import React, { useState, useEffect } from "react";
-// // import axios from "axios";
-// // import { Link, useNavigate } from "react-router-dom";
-// // import "./AdminDashboard.css"; // Import the CSS file
-
-// // // Main Admin Dashboard Component
-// // const AdminDashboard = () => {
-// //   const [events, setEvents] = useState([]);
-// //   const navigate = useNavigate();
-// //   const [showCreateForm, setShowCreateForm] = useState(false);
-// //   const [formData, setFormData] = useState({
-// //     eventName: "",
-// //     eventDescription: "",
-// //     startDate: "",
-// //     endDate: "",
-// //   });
-
-// //   useEffect(() => {
-// //     fetchEvents();
-// //   }, []);
-
-// //   const fetchEvents = () => {
-// //     axios
-// //       .get("http://localhost:8080/events/current")
-// //       .then((res) => setEvents(res.data))
-// //       .catch((err) => console.error("Error fetching events:", err));
-// //   };
-
-// //   const handleInputChange = (e) => {
-// //     const { name, value } = e.target;
-// //     setFormData((prev) => ({ ...prev, [name]: value }));
-// //   };
-
-// //   const handleFormSubmit = (e) => {
-// //     e.preventDefault();
-    
-// //     // Corrected payload to match Go backend Event struct
-// //     axios.post("http://localhost:8080/events", {
-// //       name: formData.eventName,
-// //       description: formData.eventDescription,
-// //       start_date: formData.startDate,
-// //       end_date: formData.endDate,
-// //       start_time: "", // Add empty start_time if not collected
-// //       end_time: ""    // Add empty end_time if not collected
-// //     })
-// //     .then(response => {
-// //       console.log("Event created:", response.data);
-// //       setFormData({
-// //         eventName: "",
-// //         eventDescription: "",
-// //         startDate: "",
-// //         endDate: "",
-// //       });
-// //       setShowCreateForm(false);
-// //       fetchEvents();
-// //     })
-// //     .catch(error => {
-// //       console.error("Error creating event:", error);
-// //       // Add user-friendly error handling
-// //       alert("Failed to create event. Please try again.");
-// //     });
-// //   };
-
-// //   return (
-// //     <div className="admin-dashboard">
-// //       <div className="dashboard-container">
-// //         <h2 className="dashboard-title">Admin Dashboard</h2>
-        
-// //         <button
-// //           className="btn btn-primary mb-6"
-// //           onClick={() => setShowCreateForm(!showCreateForm)}
-// //         >
-// //           {showCreateForm ? "Cancel" : "Create Event"}
-// //         </button>
-
-// //         {showCreateForm && (
-// //           <div className="create-form">
-// //             <h3 className="form-title">Create New Event</h3>
-// //             <form onSubmit={handleFormSubmit}>
-// //               <div className="form-group">
-// //                 <label className="form-label">Event Name</label>
-// //                 <input
-// //                   type="text"
-// //                   name="eventName"
-// //                   value={formData.eventName}
-// //                   onChange={handleInputChange}
-// //                   className="form-input"
-// //                   required
-// //                 />
-// //               </div>
-// //               <div className="form-group">
-// //                 <label className="form-label">Event Description</label>
-// //                 <textarea
-// //                   name="eventDescription"
-// //                   value={formData.eventDescription}
-// //                   onChange={handleInputChange}
-// //                   className="form-textarea"
-// //                   rows="3"
-// //                 />
-// //               </div>
-// //               <div className="form-group">
-// //                 <label className="form-label">Start Date</label>
-// //                 <input
-// //                   type="date"
-// //                   name="startDate"
-// //                   value={formData.startDate}
-// //                   onChange={handleInputChange}
-// //                   className="form-input"
-// //                   required
-// //                 />
-// //               </div>
-// //               <div className="form-group">
-// //                 <label className="form-label">End Date</label>
-// //                 <input
-// //                   type="date"
-// //                   name="endDate"
-// //                   value={formData.endDate}
-// //                   onChange={handleInputChange}
-// //                   className="form-input"
-// //                   required
-// //                 />
-// //               </div>
-// //               <div className="form-actions">
-// //                 <button type="submit" className="btn btn-success">
-// //                   Create Event
-// //                 </button>
-// //                 <button
-// //                   type="button"
-// //                   className="btn btn-secondary"
-// //                   onClick={() => setShowCreateForm(false)}
-// //                 >
-// //                   Cancel
-// //                 </button>
-// //               </div>
-// //             </form>
-// //           </div>
-// //         )}
-
-// //         <div>
-// //           <h1 className="section-title">Current Events</h1>
-// //           {events.length === 0 ? (
-// //             <div className="empty-state">
-// //               <div className="empty-state-icon">📅</div>
-// //               <div className="empty-state-text">No events found</div>
-// //               <div className="empty-state-subtext">Create your first event to get started</div>
-// //             </div>
-// //           ) : (
-// //             <div className="events-list">
-// //               {events.map((event) => (
-// //                 <div
-// //                   key={event.event_id}
-// //                   className="event-card fade-in"
-// //                   onClick={() => navigate(`/admin/event/${event.event_id}`)}
-// //                 >
-// //                   <h2 className="event-title">{event.name}</h2>
-// //                   <p className="event-description">{event.description}</p>
-// //                   <div className="event-footer">
-// //                     <span className="event-dates">
-// //                       {new Date(event.start_date).toLocaleDateString()} - {new Date(event.end_date).toLocaleDateString()}
-// //                     </span>
-// //                     <Link
-// //                       to={`/admin/event/${event.event_id}`}
-// //                       className="event-link"
-// //                       onClick={(e) => e.stopPropagation()}
-// //                     >
-// //                       Manage Event →
-// //                     </Link>
-// //                   </div>
-// //                 </div>
-// //               ))}
-// //             </div>
-// //           )}
-// //         </div>
-// //       </div>
-// //     </div>
-// //   );
-// // };
-
-// // export default AdminDashboard;
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
-// import { Link, useNavigate } from "react-router-dom";
-// import "./AdminDashboard.css"; // Import the CSS file
-
-// // Main Admin Dashboard Component
-// const AdminDashboard = () => {
-//   const [events, setEvents] = useState([]);
-//   const navigate = useNavigate();
-//   const [showCreateForm, setShowCreateForm] = useState(false);
-//   const [formData, setFormData] = useState({
-//     eventName: "",
-//     eventDescription: "",
-//     startDate: "",
-//     endDate: "",
-//   });
-
-//   useEffect(() => {
-//     fetchEvents();
-//   }, []);
-
-//   const fetchEvents = () => {
-//     axios
-//       .get("http://localhost:8080/events/current")
-//       .then((res) => setEvents(res.data))
-//       .catch((err) => console.error("Error fetching events:", err));
-//   };
-
-//   const handleInputChange = (e) => {
-//     const { name, value } = e.target;
-//     setFormData((prev) => ({ ...prev, [name]: value }));
-//   };
-
-//   const handleFormSubmit = (e) => {
-//     e.preventDefault();
-    
-//     // Corrected payload to match Go backend Event struct
-//     axios.post("http://localhost:8080/events", {
-//       name: formData.eventName,
-//       description: formData.eventDescription,
-//       start_date: formData.startDate,
-//       end_date: formData.endDate,
-//       start_time: "", // Add empty start_time if not collected
-//       end_time: ""    // Add empty end_time if not collected
-//     })
-//     .then(response => {
-//       console.log("Event created:", response.data);
-//       setFormData({
-//         eventName: "",
-//         eventDescription: "",
-//         startDate: "",
-//         endDate: "",
-//       });
-//       setShowCreateForm(false);
-//       fetchEvents();
-//     })
-//     .catch(error => {
-//       console.error("Error creating event:", error);
-//       // Add user-friendly error handling
-//       alert("Failed to create event. Please try again.");
-//     });
-//   };
-
-//   return (
-//     <div className="admin-dashboard">
-//       <div className="dashboard-container">
-//         <h2 className="dashboard-title">Admin Dashboard</h2>
-        
-//         <button
-//           className="btn btn-primary mb-6"
-//           onClick={() => setShowCreateForm(!showCreateForm)}
-//         >
-//           {showCreateForm ? "Cancel" : "Create Event"}
-//         </button>
-
-//         {showCreateForm && (
-//           <div className="create-form">
-//             <h3 className="form-title">Create New Event</h3>
-//             <form onSubmit={handleFormSubmit}>
-//               <div className="form-group">
-//                 <label className="form-label">Event Name</label>
-//                 <input
-//                   type="text"
-//                   name="eventName"
-//                   value={formData.eventName}
-//                   onChange={handleInputChange}
-//                   className="form-input"
-//                   required
-//                 />
-//               </div>
-//               <div className="form-group">
-//                 <label className="form-label">Event Description</label>
-//                 <textarea
-//                   name="eventDescription"
-//                   value={formData.eventDescription}
-//                   onChange={handleInputChange}
-//                   className="form-textarea"
-//                   rows="3"
-//                 />
-//               </div>
-//               <div className="form-group">
-//                 <label className="form-label">Start Date</label>
-//                 <input
-//                   type="date"
-//                   name="startDate"
-//                   value={formData.startDate}
-//                   onChange={handleInputChange}
-//                   className="form-input"
-//                   required
-//                 />
-//               </div>
-//               <div className="form-group">
-//                 <label className="form-label">End Date</label>
-//                 <input
-//                   type="date"
-//                   name="endDate"
-//                   value={formData.endDate}
-//                   onChange={handleInputChange}
-//                   className="form-input"
-//                   required
-//                 />
-//               </div>
-//               <div className="form-actions">
-//                 <button type="submit" className="btn btn-success">
-//                   Create Event
-//                 </button>
-//                 <button
-//                   type="button"
-//                   className="btn btn-secondary"
-//                   onClick={() => setShowCreateForm(false)}
-//                 >
-//                   Cancel
-//                 </button>
-//               </div>
-//             </form>
-//           </div>
-//         )}
-
-//         <div>
-//           <h1 className="section-title">Current Events</h1>
-//           {events.length === 0 ? (
-//             <div className="empty-state">
-//               <div className="empty-state-icon">📅</div>
-//               <div className="empty-state-text">No events found</div>
-//               <div className="empty-state-subtext">Create your first event to get started</div>
-//             </div>
-//           ) : (
-//             <div className="events-list">
-//               {events.map((event) => (
-//                 <div
-//                   key={event.event_id}
-//                   className="event-card fade-in"
-//                   onClick={() => navigate(`/admin/event/${event.event_id}`)}
-//                 >
-//                   <h2 className="event-title">{event.name}</h2>
-//                   <p className="event-description">{event.description}</p>
-//                   <div className="event-footer">
-//                     <span className="event-dates">
-//                       {new Date(event.start_date).toLocaleDateString()} - {new Date(event.end_date).toLocaleDateString()}
-//                     </span>
-//                     <Link
-//                       to={`/admin/event/${event.event_id}`}
-//                       className="event-link"
-//                       onClick={(e) => e.stopPropagation()}
-//                     >
-//                       Manage Event →
-//                     </Link>
-//                   </div>
-//                 </div>
-//               ))}
-//             </div>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AdminDashboard;
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import "./AdminDashboard.css"; // Import the CSS file
 
 const AdminDashboard = () => {
   const [events, setEvents] = useState([]);
@@ -765,137 +63,196 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="admin-dashboard">
-      <div className="dashboard-container">
-        <h2 className="dashboard-title">Admin Dashboard</h2>
+    <div className="min-h-screen items-start pt-10  p-8 font-sans">
+      <div className="max-w-7xl mx-auto bg-white/95 backdrop-blur-sm rounded-3xl p-10 shadow-2xl">
+        {/* Dashboard Title */}
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-bold text-gray-800 mb-2 bg-customPink bg-clip-text text-transparent">
+            Event Dashboard
+          </h1>
+          <div className="w-24 h-1 bg-customPink mx-auto rounded-full"></div>
+        </div>
 
+        {/* Create Event Button */}
         <button
-          className="btn btn-primary mb-6"
+          className="relative overflow-hidden px-6 py-5 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-500/60 mb-8 group"
           onClick={() => setShowCreateForm(!showCreateForm)}
         >
-          {showCreateForm ? "Cancel" : "Create Event"}
+          <span className="relative z-10">
+            {showCreateForm ? "Cancel" : "Create Event"}
+          </span>
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500"></div>
         </button>
 
+        {/* Create Event Form */}
         {showCreateForm && (
-          <div className="create-form">
-            <h3 className="form-title">Create New Event</h3>
-            <form onSubmit={handleFormSubmit}>
-              <div className="form-group">
-                <label className="form-label">Event Name</label>
+          <div className="bg-white rounded-2xl p-8 mb-8 shadow-xl border border-white/20 animate-in slide-in-from-top-4 duration-300">
+            <h3 className="text-2xl font-semibold text-gray-800 text-center mb-6">
+              Create New Event
+            </h3>
+            <form onSubmit={handleFormSubmit} className="space-y-6">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Event Name
+                </label>
                 <input
                   type="text"
                   name="eventName"
                   value={formData.eventName}
                   onChange={handleInputChange}
-                  className="form-input"
+                  className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl text-base transition-all duration-300 focus:outline-none focus:border-blue-500 focus:bg-white focus:shadow-lg focus:shadow-blue-500/10 focus:-translate-y-0.5"
                   required
                 />
               </div>
-              <div className="form-group">
-                <label className="form-label">Event Description</label>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Event Description
+                </label>
                 <textarea
                   name="eventDescription"
                   value={formData.eventDescription}
                   onChange={handleInputChange}
-                  className="form-textarea"
                   rows="3"
+                  className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl text-base transition-all duration-300 focus:outline-none focus:border-blue-500 focus:bg-white focus:shadow-lg focus:shadow-blue-500/10 focus:-translate-y-0.5 resize-y min-h-[80px]"
                 />
               </div>
-              <div className="form-group">
-                <label className="form-label">Start Date</label>
-                <input
-                  type="date"
-                  name="startDate"
-                  value={formData.startDate}
-                  onChange={handleInputChange}
-                  className="form-input"
-                  required
-                />
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Start Date
+                  </label>
+                  <input
+                    type="date"
+                    name="startDate"
+                    value={formData.startDate}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl text-base transition-all duration-300 focus:outline-none focus:border-blue-500 focus:bg-white focus:shadow-lg focus:shadow-blue-500/10 focus:-translate-y-0.5"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Start Time
+                  </label>
+                  <input
+                    type="time"
+                    name="startTime"
+                    value={formData.startTime}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl text-base transition-all duration-300 focus:outline-none focus:border-blue-500 focus:bg-white focus:shadow-lg focus:shadow-blue-500/10 focus:-translate-y-0.5"
+                    required
+                  />
+                </div>
               </div>
-              <div className="form-group">
-                <label className="form-label">Start Time</label>
-                <input
-                  type="time"
-                  name="startTime"
-                  value={formData.startTime}
-                  onChange={handleInputChange}
-                  className="form-input"
-                  required
-                />
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    End Date
+                  </label>
+                  <input
+                    type="date"
+                    name="endDate"
+                    value={formData.endDate}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl text-base transition-all duration-300 focus:outline-none focus:border-blue-500 focus:bg-white focus:shadow-lg focus:shadow-blue-500/10 focus:-translate-y-0.5"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    End Time
+                  </label>
+                  <input
+                    type="time"
+                    name="endTime"
+                    value={formData.endTime}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl text-base transition-all duration-300 focus:outline-none focus:border-blue-500 focus:bg-white focus:shadow-lg focus:shadow-blue-500/10 focus:-translate-y-0.5"
+                    required
+                  />
+                </div>
               </div>
-              <div className="form-group">
-                <label className="form-label">End Date</label>
-                <input
-                  type="date"
-                  name="endDate"
-                  value={formData.endDate}
-                  onChange={handleInputChange}
-                  className="form-input"
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label">End Time</label>
-                <input
-                  type="time"
-                  name="endTime"
-                  value={formData.endTime}
-                  onChange={handleInputChange}
-                  className="form-input"
-                  required
-                />
-              </div>
-              <div className="form-actions">
-                <button type="submit" className="btn btn-success">
-                  Create Event
+
+              <div className="flex flex-col md:flex-row gap-4 justify-center mt-8">
+                <button
+                  type="submit"
+                  className="relative overflow-hidden px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-xl shadow-lg shadow-green-500/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/60 group"
+                >
+                  <span className="relative z-10">Create Event</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500"></div>
                 </button>
+
                 <button
                   type="button"
-                  className="btn btn-secondary"
+                  className="relative overflow-hidden px-6 py-3 bg-gradient-to-r from-gray-500 to-gray-600 text-white font-semibold rounded-xl shadow-lg shadow-gray-500/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-gray-500/60 group"
                   onClick={() => setShowCreateForm(false)}
                 >
-                  Cancel
+                  <span className="relative z-10">Cancel</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500"></div>
                 </button>
               </div>
             </form>
           </div>
         )}
 
+        {/* Current Events Section */}
         <div>
-          <h1 className="section-title">Current Events</h1>
+          <h1 className="text-3xl font-semibold  mb-6 relative text-customPink">
+            Current Events
+          </h1>
+
           {events.length === 0 ? (
-            <div className="empty-state">
-              <div className="empty-state-icon">📅</div>
-              <div className="empty-state-text">No events found</div>
-              <div className="empty-state-subtext">
+            <div className="text-center py-12 text-gray-500">
+              <div className="text-5xl mb-4 opacity-50">📅</div>
+              <div className="text-lg mb-2">No events found</div>
+              <div className="text-sm opacity-70">
                 Create your first event to get started
               </div>
             </div>
           ) : (
-            <div className="events-list">
-              {events.map((event) => (
-                <div
-                  key={event.event_id}
-                  className="event-card fade-in"
-                  onClick={() => navigate(`/admin/event/${event.event_id}`)}
-                >
-                  <h2 className="event-title">{event.name}</h2>
-                  <p className="event-description">{event.description}</p>
-                  <div className="event-footer">
-                    <span className="event-dates">
-                      {new Date(event.start_date).toLocaleDateString()} -{" "}
-                      {new Date(event.end_date).toLocaleDateString()}
-                    </span>
-                    <Link
-                      to={`/admin/event/${event.event_id}`}
-                      className="event-link"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      Manage Event →
-                    </Link>
+            <div className="grid gap-6 mt-8">
+              {Array.isArray(events) && events.length > 0 ? (
+                events.map((event) => (
+                  <div
+                    key={event.event_id}
+                    className="relative bg-white rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50 group overflow-hidden animate-in fade-in-0 slide-in-from-bottom-4 duration-500"
+                    onClick={() => navigate(`/admin/event/${event.event_id}`)}
+                  >
+                    {/* Top accent line */}
+<div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-customPink via-pink-500 to-customPink z-10"></div>
+
+
+
+                    <h2 className="text-xl font-semibold text-gray-800 mb-2 group-hover:text-indigo-700 transition-colors">
+                      {event.name}
+                    </h2>
+                    <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+                      {event.description}
+                    </p>
+
+                    <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 pt-4 border-t border-gray-200">
+                      <span className="text-sm text-gray-500 font-medium">
+                        {new Date(event.start_date).toLocaleDateString()} -{" "}
+                        {new Date(event.end_date).toLocaleDateString()}
+                      </span>
+                      <Link
+                        to={`/admin/event/${event.event_id}`}
+                        className="inline-flex items-center text-blue-600 text-sm font-semibold px-4 py-2 rounded-lg bg-blue-100/50 hover:bg-blue-200/50 hover:text-blue-700 transition-all duration-300 hover:translate-x-1 self-start"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        Manage Event →
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p className="text-gray-500 text-center py-8">No events found.</p>
+              )}
             </div>
           )}
         </div>

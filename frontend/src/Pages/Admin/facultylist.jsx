@@ -1,293 +1,7 @@
-
-// import { useState, useEffect } from "react";
-// import { Trash2, Edit, X, Check, AlertCircle } from "lucide-react";
-// import './facultylist.css';
-// export default function TeachersList() {
-//   const [teachers, setTeachers] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const [editingTeacher, setEditingTeacher] = useState(null);
-//   const [editFormData, setEditFormData] = useState({
-//     name: "",
-//     email: "",
-//     departmentname:"",
-//   });
-//   const [notification, setNotification] = useState(null);
-
-//   useEffect(() => {
-//     const fetchTeachers = async () => {
-//       try {
-//         setLoading(true);
-//         const response = await fetch("http://localhost:8080/teachers");
-
-//         if (!response.ok) {
-//           throw new Error(`Error fetching teachers: ${response.status}`);
-//         }
-
-//         const data = await response.json();
-//         setTeachers(data);
-//         setLoading(false);
-//       } catch (err) {
-//         setError(err.message);
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchTeachers();
-//   }, []);
-
-//   const showNotification = (message, type = "success") => {
-//     setNotification({ message, type });
-//     setTimeout(() => setNotification(null), 3000);
-//   };
-
-//   const handleEditClick = (teacher) => {
-//     setEditingTeacher(teacher.id);
-//     setEditFormData({
-//       name: teacher.name,
-//       email: teacher.email,
-//       departmentname:teacher.department_name,
-//     });
-//   };
-
-//   const handleCancelEdit = () => {
-//     setEditingTeacher(null);
-//   };
-
-//   const handleEditFormChange = (e) => {
-//     const { name, value } = e.target;
-//     setEditFormData({
-//       ...editFormData,
-//       [name]: value,
-//     });
-//   };
-
-//   const handleSaveEdit = async (teacherId) => {
-//     try {
-//       const response = await fetch(`http://localhost:8080/teacher/${teacherId}`, {
-//         method: "PUT",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(editFormData),
-//       });
-
-//       if (!response.ok) {
-//         throw new Error("Failed to update teacher");
-//       }
-
-//       setTeachers(
-//         teachers.map((teacher) =>
-//           teacher.id === teacherId ? { ...teacher, ...editFormData } : teacher
-//         )
-//       );
-
-//       setEditingTeacher(null);
-//       showNotification("Teacher updated successfully");
-//     } catch (err) {
-//       showNotification(err.message, "error");
-//     }
-//   };
-
-//   const confirmDelete = (message) => {
-//     return window.confirm(message);
-//   };
-
-//   const handleDeleteTeacher = async (teacherId) => {
-//     const shouldDelete = confirmDelete(
-//       "Are you sure you want to delete this teacher? This will also remove all associated assignments and references."
-//     );
-
-//     if (!shouldDelete) return;
-
-//     try {
-//       const response = await fetch(`http://localhost:8080/teacher/${teacherId}`, {
-//         method: "DELETE",
-//       });
-
-//       if (!response.ok) {
-//         throw new Error("Failed to delete teacher");
-//       }
-
-//       setTeachers(teachers.filter((teacher) => teacher.id !== teacherId));
-//       showNotification("Teacher deleted successfully");
-//     } catch (err) {
-//       showNotification(err.message, "error");
-//     }
-//   };
-
-//   if (loading) {
-//     return (
-//       <div className="flex items-center justify-center h-64">
-//         <div className="text-lg font-medium text-gray-500">Loading teachers...</div>
-//       </div>
-//     );
-//   }
-
-//   if (error) {
-//     return (
-//       <div className="bg-red-50 border border-red-200 rounded-lg p-4 mt-4">
-//         <div className="flex">
-//           <AlertCircle className="h-5 w-5 text-red-400" />
-//           <div className="ml-3">
-//             <h3 className="text-sm font-medium text-red-800">Error loading teachers</h3>
-//             <div className="mt-2 text-sm text-red-700">{error}</div>
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="px-4 sm:px-6 lg:px-8 py-8">
-//       {notification && (
-//         <div
-//           className={`fixed top-4 right-4 z-50 p-4 rounded-md shadow-md ${
-//             notification.type === "error"
-//               ? "bg-red-50 text-red-800"
-//               : "bg-green-50 text-green-800"
-//           }`}
-//         >
-//           {notification.message}
-//         </div>
-//       )}
-
-//       <div className="sm:flex sm:items-center">
-//         <div className="sm:flex-auto">
-//           <h1 className="text-2xl font-semibold text-gray-900">Teachers</h1>
-//           <p className="mt-2 text-sm text-gray-700">
-//             A list of all teachers including their name, email, department, and points.
-//           </p>
-//         </div>
-//       </div>
-
-//       <div className="mt-8 flex flex-col">
-//         <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-//           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-//             <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-//               <table className="min-w-full divide-y divide-gray-300">
-//                 <thead className="bg-gray-50">
-//                   <tr>
-//                     <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-//                       Name
-//                     </th>
-//                     <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-//                       Email
-//                     </th>
-//                     <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-//                       Department
-//                     </th>
-//                     <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-//                       Points
-//                     </th>
-//                     <th className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-//                       <span className="sr-only">Actions</span>
-//                     </th>
-//                   </tr>
-//                 </thead>
-//                 <tbody className="divide-y divide-gray-200 bg-white">
-//                   {teachers.length === 0 ? (
-//                     <tr>
-//                       <td colSpan="5" className="py-4 text-center text-sm text-gray-500">
-//                         No teachers found
-//                       </td>
-//                     </tr>
-//                   ) : (
-//                     teachers.map((teacher) => (
-//                       <tr key={teacher.id}>
-//                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
-//                           {editingTeacher === teacher.id ? (
-//                             <input
-//                               type="text"
-//                               name="name"
-//                               value={editFormData.name}
-//                               onChange={handleEditFormChange}
-//                               className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-//                             />
-//                           ) : (
-//                             <div className="font-medium text-gray-900">{teacher.name}</div>
-//                           )}
-//                         </td>
-//                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-//                           {editingTeacher === teacher.id ? (
-//                             <input
-//                               type="email"
-//                               name="email"
-//                               value={editFormData.email}
-//                               onChange={handleEditFormChange}
-//                               className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-//                             />
-//                           ) : (
-//                             teacher.email
-//                           )}
-//                         </td>
-//                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-//                           {/* {teacher.department_name || "N/A"} */}
-//                           {editingTeacher === teacher.id ? (
-//                             <input
-//                               type="text"
-//                               name="departmentname"
-//                               value={editFormData.departmentname}
-//                               onChange={handleEditFormChange}
-//                               className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-//                             />
-//                           ) : (
-//                             teacher.department_name
-//                           )}
-//                         </td>
-//                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-//                           {teacher.point}
-//                         </td>
-//                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-//                           {editingTeacher === teacher.id ? (
-//                             <div className="flex space-x-2 justify-end">
-//                               <button
-//                                 onClick={() => handleSaveEdit(teacher.id)}
-//                                 className="text-green-600 hover:text-green-900"
-//                               >
-//                                 <Check className="w-5 h-5" />
-//                               </button>
-//                               <button
-//                                 onClick={handleCancelEdit}
-//                                 className="text-gray-600 hover:text-gray-900"
-//                               >
-//                                 <X className="w-5 h-5" />
-//                               </button>
-//                             </div>
-//                           ) : (
-//                             <div className="flex space-x-2 justify-end">
-//                               <button
-//                                 onClick={() => handleEditClick(teacher)}
-//                                 className="text-indigo-600 hover:text-indigo-900"
-//                               >
-//                                 <Edit className="w-5 h-5" />
-//                               </button>
-//                               <button
-//                                 onClick={() => handleDeleteTeacher(teacher.id)}
-//                                 className="text-red-600 hover:text-red-900"
-//                               >
-//                                 <Trash2 className="w-5 h-5" />
-//                               </button>
-//                             </div>
-//                           )}
-//                         </td>
-//                       </tr>
-//                     ))
-//                   )}
-//                 </tbody>
-//               </table>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
 import { useState, useEffect } from "react";
 import { Trash2, Edit, X, Check, AlertCircle } from "lucide-react";
-import './facultylist.css';
 
-export default function TeachersList() {
+export default function FacultyList() {
   const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -403,21 +117,21 @@ export default function TeachersList() {
 
   if (loading) {
     return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
-        <div className="loading-text">Loading teachers...</div>
+      <div className="flex flex-col items-center justify-center h-80 bg-white rounded-xl shadow-lg">
+        <div className="w-12 h-12 border-4 border-gray-200 border-t-indigo-500 rounded-full animate-spin"></div>
+        <div className="mt-4 text-lg font-medium text-gray-600">Loading teachers...</div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="error-container">
-        <div className="error-content">
-          <AlertCircle className="error-icon" />
+      <div className="bg-gradient-to-br from-red-50 to-red-100 border border-red-200 rounded-xl p-6 mt-4 shadow-lg">
+        <div className="flex items-start">
+          <AlertCircle className="w-6 h-6 text-red-600 mr-3 flex-shrink-0" />
           <div>
-            <h3 className="error-title">Error loading teachers</h3>
-            <div className="error-message">{error}</div>
+            <h3 className="text-base font-semibold text-red-800 mb-2">Error loading teachers</h3>
+            <div className="text-sm text-red-700">{error}</div>
           </div>
         </div>
       </div>
@@ -425,120 +139,142 @@ export default function TeachersList() {
   }
 
   return (
-    <div className="teachers-container">
+    <div className="p-8 bg-gradient-to-br from-gray-50 to-gray-200 min-h-screen font-sans">
+      {/* Notification */}
       {notification && (
-        <div className={`notification ${notification.type}`}>
+        <div className={`fixed top-6 right-6 z-50 px-6 py-4 rounded-lg shadow-xl font-medium animate-pulse max-w-sm border-l-4 ${
+          notification.type === 'success' 
+            ? 'bg-gradient-to-br from-green-50 to-green-100 text-green-800 border-l-green-500' 
+            : 'bg-gradient-to-br from-red-50 to-red-100 text-red-800 border-l-red-500'
+        }`}>
           {notification.message}
         </div>
       )}
 
-      <div className="teachers-header">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8 p-6 bg-white rounded-xl shadow-lg border border-gray-200">
         <div>
-          <h1 className="teachers-title">Teachers</h1>
-          <p className="teachers-description">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-600 to-pink-800 bg-clip-text text-transparent">
+            Teachers
+          </h1>
+          <p className="mt-2 text-base text-gray-600 font-normal">
             A list of all teachers including their name, email, department, and points.
           </p>
         </div>
       </div>
 
-      <div className="table-wrapper">
-        <div className="table-container">
-          <table className="teachers-table">
-            <thead className="table-header">
+      {/* Table */}
+      <div className="mt-8 bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-200">
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
               <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Department</th>
-                <th>Points</th>
-                <th>
+                <th className="px-6 py-5 text-left text-sm font-bold text-gray-700 uppercase tracking-wider relative">
+                  Name
+                </th>
+                <th className="px-6 py-5 text-left text-sm font-bold text-gray-700 uppercase tracking-wider relative">
+                  Email
+                </th>
+                <th className="px-6 py-5 text-left text-sm font-bold text-gray-700 uppercase tracking-wider relative">
+                  Department
+                </th>
+                <th className="px-6 py-5 text-left text-sm font-bold text-gray-700 uppercase tracking-wider relative">
+                  Points
+                </th>
+                <th className="px-6 py-5 text-left text-sm font-bold text-gray-700 uppercase tracking-wider relative">
                   <span className="sr-only">Actions</span>
                 </th>
               </tr>
             </thead>
-            <tbody className="table-body">
+            <tbody className="bg-white">
               {teachers.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="empty-state">
-                    <div className="empty-state-text">No teachers found</div>
+                  <td colSpan="5" className="px-12 py-12 text-center text-lg font-medium text-gray-500 bg-gradient-to-br from-pink-50 to-gray-50">
+                    No teachers found
                   </td>
                 </tr>
               ) : (
                 teachers.map((teacher) => (
-                  <tr key={teacher.id} className="table-row">
-                    <td className="table-cell">
+                  <tr 
+                    key={teacher.id} 
+                    className="border-b border-gray-100 transition-all duration-200 ease-in-out hover:bg-gradient-to-r hover:from-pink-50 hover:to-gray-50 hover:-translate-y-0.5 hover:shadow-lg animate-pulse"
+                  >
+                    <td className="px-6 py-5 text-sm text-gray-700">
                       {editingTeacher === teacher.id ? (
                         <input
                           type="text"
                           name="name"
                           value={editFormData.name}
                           onChange={handleEditFormChange}
-                          className="edit-input"
+                          className="w-full px-3 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all duration-200 bg-white text-gray-700 hover:border-pink-300 focus:outline-none focus:border-pink-500 focus:shadow-lg focus:bg-pink-50"
                         />
                       ) : (
-                        <div className="teacher-name">{teacher.name}</div>
+                        <div className="font-semibold text-gray-800 text-base">{teacher.name}</div>
                       )}
                     </td>
-                    <td className="table-cell">
+                    <td className="px-6 py-5 text-sm text-gray-700">
                       {editingTeacher === teacher.id ? (
                         <input
                           type="email"
                           name="email"
                           value={editFormData.email}
                           onChange={handleEditFormChange}
-                          className="edit-input"
+                          className="w-full px-3 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all duration-200 bg-white text-gray-700 hover:border-pink-300 focus:outline-none focus:border-pink-500 focus:shadow-lg focus:bg-pink-50"
                         />
                       ) : (
-                        <div className="teacher-email">{teacher.email}</div>
+                        <div className="text-gray-600 font-mono">{teacher.email}</div>
                       )}
                     </td>
-                    <td className="table-cell">
+                    <td className="px-6 py-5 text-sm text-gray-700">
                       {editingTeacher === teacher.id ? (
                         <input
                           type="text"
                           name="departmentname"
                           value={editFormData.departmentname}
                           onChange={handleEditFormChange}
-                          className="edit-input"
+                          className="w-full px-3 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all duration-200 bg-white text-gray-700 hover:border-pink-300 focus:outline-none focus:border-pink-500 focus:shadow-lg focus:bg-pink-50"
                         />
                       ) : (
-                        <div className="teacher-department">
+                        <span className="inline-block px-3 py-1 text-pink-600 font-medium bg-pink-100 rounded-full text-sm">
                           {teacher.department_name || "N/A"}
-                        </div>
+                        </span>
                       )}
                     </td>
-                    <td className="table-cell">
-                      <div className="teacher-points">{teacher.point}</div>
+                    <td className="px-6 py-5 text-sm text-gray-700">
+                      <span className="inline-block px-3 py-2 font-bold text-emerald-600 bg-emerald-50 rounded-lg text-base">
+                        {teacher.point}
+                      </span>
                     </td>
-                    <td className="table-cell">
+                    <td className="px-6 py-5 text-sm text-gray-700">
                       {editingTeacher === teacher.id ? (
-                        <div className="actions-container">
+                        <div className="flex gap-2 justify-end">
                           <button
                             onClick={() => handleSaveEdit(teacher.id)}
-                            className="action-button save-button"
+                            className="p-2 border-none rounded-lg cursor-pointer transition-all duration-200 flex items-center justify-center bg-gradient-to-br from-emerald-100 to-emerald-200 text-emerald-600 hover:from-emerald-200 hover:to-emerald-300 hover:text-emerald-700 hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                             title="Save changes"
                           >
                             <Check className="w-5 h-5" />
                           </button>
                           <button
                             onClick={handleCancelEdit}
-                            className="action-button cancel-button"
+                            className="p-2 border-none rounded-lg cursor-pointer transition-all duration-200 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 text-gray-600 hover:from-gray-200 hover:to-gray-300 hover:text-gray-700 hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                             title="Cancel editing"
                           >
                             <X className="w-5 h-5" />
                           </button>
                         </div>
                       ) : (
-                        <div className="actions-container">
+                        <div className="flex gap-2 justify-end">
                           <button
                             onClick={() => handleEditClick(teacher)}
-                            className="action-button edit-button"
+                            className="p-2 border-none rounded-lg cursor-pointer transition-all duration-200 flex items-center justify-center bg-gradient-to-br from-pink-100 to-pink-200 text-pink-600 hover:from-pink-200 hover:to-pink-300 hover:text-pink-700 hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
                             title="Edit teacher"
                           >
                             <Edit className="w-5 h-5" />
                           </button>
                           <button
                             onClick={() => handleDeleteTeacher(teacher.id)}
-                            className="action-button delete-button"
+                            className="p-2 border-none rounded-lg cursor-pointer transition-all duration-200 flex items-center justify-center bg-gradient-to-br from-red-100 to-red-200 text-red-600 hover:from-red-200 hover:to-red-300 hover:text-red-700 hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                             title="Delete teacher"
                           >
                             <Trash2 className="w-5 h-5" />

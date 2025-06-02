@@ -1,24 +1,29 @@
-// Sidebar.jsx
-import React from "react";
-import { Home, History,LogOut } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../Auth/AuthContext";
 
-const Sidebar = () => {
+import React from "react";
+import { Home, History, Users, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../Auth/AuthContext"; // use the hook, not the context
+
+const AdminSidebar = () => {
   const navigate = useNavigate();
   const { logout } = useAuth();
+
   const menuItems = [
-    { icon: <Home size={20} />, label: "Home", path: "/faculty" },
-    { icon: <History size={20} />, label: "Past Events", path: "/faculty/event-historyfaculty" },
+    { icon: <Home size={20} />, label: "Home", path: "/admin" },
+    { icon: <History size={20} />, label: "Past Events", path: "/admin/event-history" },
+    { icon: <Users size={20} />, label: "Users", path: "/admin/add-teacher" },
+    { icon: <Users size={20} />, label: "Teachers", path: "/admin/faculty-list" },
   ];
+
   const handleLogout = () => {
     logout();             // calls logout from context
     navigate("/login");   // redirects to login page
   };
+
   return (
     <div className="w-64 h-screen bg-gray-900 text-white flex flex-col p-4">
-      <h1 className="text-3xl font-bold mb-10">Faculty Panel</h1>
-      <nav className="space-y-2">
+      <h1 className="text-3xl font-bold mb-10">Admin Panel</h1>
+      <nav className="space-y-2 flex-1 ">
         {menuItems.map((item, index) => (
           <button
             key={index}
@@ -42,4 +47,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default AdminSidebar;

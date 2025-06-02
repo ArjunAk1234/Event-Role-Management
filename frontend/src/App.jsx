@@ -2,20 +2,18 @@ import React from 'react';
 import './App.css';
 
 import { BrowserRouter as Router, Routes, Route , Navigate } from 'react-router-dom';
-
 import AddTeacher from './Pages/Admin/AddTeacher';
 import Signup from './Pages/Auth/Signup';
 import Login from './Pages/Auth/Login';
 import AdminDashboard from './Pages/Admin/AdminDashboard';
-import DashboardLayout from './Pages/Layout/DashboardLayout';
+import DashboardLayout from './Pages/Layout/AdminDashboardLayout';
 import EventHistory from './Pages/Admin/EventHistory';
 import FacultyDashboard  from './Pages/Faculty/FacultyDashboard';
-import EventDashboard from './Pages/Admin/EventDashboard'; // Import EventDashboard component
+import EventDashboard from './Pages/Admin/EventDashboard'; 
 import Facultylist from './Pages/Admin/facultylist';
 import PrivateRoute from './Pages/Auth/PrivateRoute';
-import FacultyDashboardLayout from './Pages/Layout/FacultydashboardLayout';
+import FacultyDashboardLayout from './Pages/Layout/FacultyDashBoardLayout';
 import FacultyEventHistory from './Pages/Faculty/FacultyEventHistory';
-
 import { AuthProvider } from './Pages/Auth/AuthContext'; 
 
 function App() {
